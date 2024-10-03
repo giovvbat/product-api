@@ -1,6 +1,5 @@
 package com.giovanna.demo.model;
 
-import com.giovanna.demo.enums.UserAuthority;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

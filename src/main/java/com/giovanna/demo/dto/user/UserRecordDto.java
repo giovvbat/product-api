@@ -1,6 +1,5 @@
 package com.giovanna.demo.dto.user;
 
-import com.giovanna.demo.enums.UserAuthority;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

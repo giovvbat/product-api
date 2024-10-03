@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -32,20 +32,20 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    @Secured({"ROLE_ADMIN, ROLE_MANAGER, ROLE_EMPLOYEE"})
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_MANAGER, ROLE_EMPLOYEE')")
     public ResponseEntity<String> logUserOut() {
         userService.logUserOut();
         return ResponseEntity.status(HttpStatus.OK).body("Logged out successfully!");
     }
 
     @PutMapping("/{id}")
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<UpdateUserResponseDto> updateUser(@PathVariable(value = "id") UUID id, @RequestBody @Valid UserRecordDto userRecordDto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id, userRecordDto));
     }
 
     @DeleteMapping("/{id}")
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<String> deleteUser(@PathVariable(value = "id") UUID id) {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully!");

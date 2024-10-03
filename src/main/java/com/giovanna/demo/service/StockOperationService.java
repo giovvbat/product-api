@@ -41,7 +41,7 @@ public class StockOperationService {
             product.setStock(product.getStock() + stockOperationRecordDto.productQuantity());
         }
         else {
-            if (stockOperationRecordDto.productQuantity() > product.getStock()) {
+            if (!isOperationPossible(stockOperationRecordDto.operationType(), stockOperationRecordDto.productId(), stockOperationRecordDto.productQuantity())) {
                 throw new InviableStockOperationException();
             }
             product.setStock(product.getStock() - stockOperationRecordDto.productQuantity());
@@ -91,5 +91,16 @@ public class StockOperationService {
         }
 
         return stockOperations;
+    }
+
+    public boolean isOperationPossible(OperationType operationType, UUID productId, Integer productQuantity) {
+        if (operationType.equals(OperationType.ENTRY)) {
+            return true;
+        }
+
+        ProductModel product = productRepository.findById(productId).
+                orElseThrow(ProductNotFoundException::new);
+
+        return product.getStock() >= productQuantity;
     }
 }

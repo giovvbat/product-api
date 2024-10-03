@@ -1,6 +1,7 @@
 package com.giovanna.demo.model;
 
 import com.giovanna.demo.enums.OperationType;
+import com.giovanna.demo.infra.exception.stock.InviableStockOperationException;
 import jakarta.persistence.*;
 
 import java.io.Serial;
