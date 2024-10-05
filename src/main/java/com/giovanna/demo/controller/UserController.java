@@ -7,10 +7,14 @@ import com.giovanna.demo.dto.user.UserRecordDto;
 import com.giovanna.demo.model.UserModel;
 import com.giovanna.demo.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -40,13 +44,13 @@ public class UserController {
 
     @PutMapping("/{id}")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<UpdateUserResponseDto> updateUser(@PathVariable(value = "id") UUID id, @RequestBody @Valid UserRecordDto userRecordDto) {
+    public ResponseEntity<UpdateUserResponseDto> updateUser(@PathVariable(value = "id") @NotNull @Validated UUID id, @RequestBody @Valid UserRecordDto userRecordDto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(id, userRecordDto));
     }
 
     @DeleteMapping("/{id}")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<String> deleteUser(@PathVariable(value = "id") UUID id) {
+    public ResponseEntity<String> deleteUser(@PathVariable(value = "id") @NotNull @Validated UUID id) {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully!");
     }

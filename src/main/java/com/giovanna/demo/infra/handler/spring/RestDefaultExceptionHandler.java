@@ -1,9 +1,12 @@
 package com.giovanna.demo.infra.handler.spring;
 
 import com.giovanna.demo.dto.error.RestErrorRecordDto;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,12 +17,13 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import java.sql.SQLSyntaxErrorException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestControllerAdvice
 public class RestDefaultExceptionHandler {
-    /*spring annotations validations*/
+    /*spring annotations validations post/put-methods*/
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new LinkedHashMap<>();
         errors.put("status", HttpStatus.BAD_REQUEST.toString());
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -27,6 +31,22 @@ public class RestDefaultExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
+    /*spring annotations validations get-methods*/
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> handleConstraintsException(ConstraintViolationException ex) {
+        Map<String, String> errors = new LinkedHashMap<>();
+        errors.put("status", HttpStatus.BAD_REQUEST.toString());
+        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+
+        for (ConstraintViolation<?> violation : violations) {
+            String fieldName = violation.getPropertyPath().toString();
+            String errorMessage = violation.getMessage();
+            errors.put(fieldName, errorMessage);
+        }
+
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 

@@ -3,6 +3,7 @@ package com.giovanna.demo.controller;
 import com.giovanna.demo.dto.store.StoreRecordDto;
 import com.giovanna.demo.model.StoreModel;
 import com.giovanna.demo.service.StoreService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class StoreController {
 
     @PostMapping
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<StoreModel> saveStore(@RequestBody StoreRecordDto storeRecordDto) {
+    public ResponseEntity<StoreModel> saveStore(@RequestBody @Valid StoreRecordDto storeRecordDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(storeService.saveStore(storeRecordDto));
     }
 }

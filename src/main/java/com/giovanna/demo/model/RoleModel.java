@@ -22,7 +22,7 @@ public class RoleModel implements Serializable {
     @ElementCollection(targetClass = UserAuthority.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "role_authorities", joinColumns = @JoinColumn(name = "role_id"))
     @Enumerated(EnumType.STRING)
-    @Column(name = "authority")
+    @Column(name = "role_authorities", nullable = false)
     private Set<UserAuthority> authorities;
 
     @JsonBackReference

@@ -4,10 +4,13 @@ import com.giovanna.demo.dto.stock.StockOperationRecordDto;
 import com.giovanna.demo.model.StockOperationModel;
 import com.giovanna.demo.service.StockOperationService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -28,19 +31,19 @@ public class StockOperationController {
 
     @GetMapping("/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
-    public ResponseEntity<StockOperationModel> getOperationById(@PathVariable("id") UUID id) {
+    public ResponseEntity<StockOperationModel> getOperationById(@PathVariable(value = "id") @NotNull @Validated UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(stockOperationService.getOperationById(id));
     }
 
     @GetMapping("/date/range")
     @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
-    public ResponseEntity<List<StockOperationModel>> getOperationByDateRange(@RequestParam LocalDateTime from, @RequestParam LocalDateTime to) {
+    public ResponseEntity<List<StockOperationModel>> getOperationByDateRange(@RequestParam @NotNull @Validated LocalDateTime from, @RequestParam @NotNull @Validated LocalDateTime to) {
         return ResponseEntity.status(HttpStatus.OK).body(stockOperationService.getOperationByDateRange(from, to));
     }
 
-    @GetMapping("/store")
+    @GetMapping("/store/{id}")
     @Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
-    public ResponseEntity<List<StockOperationModel>> getOperationByStore(@RequestParam UUID storeId) {
+    public ResponseEntity<List<StockOperationModel>> getOperationByStore(@PathVariable(value = "id") @NotNull @Validated UUID storeId) {
         return ResponseEntity.status(HttpStatus.OK).body(stockOperationService.getOperationByStore(storeId));
     }
 

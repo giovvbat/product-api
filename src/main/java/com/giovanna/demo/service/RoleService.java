@@ -69,6 +69,10 @@ public class RoleService {
         RoleModel role = roleRepository.findById(id)
                 .orElseThrow(RoleNotFoundException::new);
 
+        if (roleRepository.findByRoleName(roleRecordDto.name()).isPresent()) {
+            throw new RoleNameAlreadyTakenException();
+        }
+
         BeanUtils.copyProperties(roleRecordDto, role);
         return roleRepository.save(role);
     }
