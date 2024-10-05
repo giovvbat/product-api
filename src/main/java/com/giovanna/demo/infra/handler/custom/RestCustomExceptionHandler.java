@@ -4,6 +4,7 @@ import com.giovanna.demo.dto.error.RestErrorRecordDto;
 import com.giovanna.demo.infra.exception.product.NoProductsFoundException;
 import com.giovanna.demo.infra.exception.product.ProductNotFoundException;
 import com.giovanna.demo.infra.exception.role.NoRolesFoundException;
+import com.giovanna.demo.infra.exception.role.RoleNameAlreadyTakenException;
 import com.giovanna.demo.infra.exception.role.RoleNotFoundException;
 import com.giovanna.demo.infra.exception.stock.InviableStockOperationException;
 import com.giovanna.demo.infra.exception.stock.NoStockOperationsFoundException;
@@ -22,14 +23,14 @@ public class RestCustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RestErrorRecordDto(HttpStatus.NOT_FOUND.toString(), ex.getMessage()));
     }
 
-    @ExceptionHandler({UsernameAlreadyTakenException.class, EmailAlreadyTakenException.class})
+    @ExceptionHandler({RoleNameAlreadyTakenException.class, UsernameAlreadyTakenException.class, EmailAlreadyTakenException.class})
     public ResponseEntity<RestErrorRecordDto> handleConflictException(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new RestErrorRecordDto(HttpStatus.CONFLICT.toString(), ex.getMessage()));
     }
 
     @ExceptionHandler(InviableStockOperationException.class)
     public ResponseEntity<RestErrorRecordDto> handleBadRequestException(InviableStockOperationException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorRecordDto(HttpStatus.CONFLICT.toString(), ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorRecordDto(HttpStatus.BAD_REQUEST.toString(), ex.getMessage()));
     }
 
     @ExceptionHandler(UnauthorizedCredentialsException.class)

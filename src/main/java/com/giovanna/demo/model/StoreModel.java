@@ -17,10 +17,10 @@ public class StoreModel implements Serializable {
     @Column(name = "store_id")
     private UUID id;
 
-    @Column(name = "store_name", nullable = false, unique = true)
+    @Column(name = "store_name", nullable = false)
     private String name;
 
-    @Column(name = "store_address", nullable = false, unique = true)
+    @Column(name = "store_address", nullable = false)
     private String address;
 
     public StoreModel() {

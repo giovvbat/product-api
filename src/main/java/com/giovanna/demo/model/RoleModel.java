@@ -1,5 +1,6 @@
 package com.giovanna.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.giovanna.demo.enums.UserAuthority;
 import jakarta.persistence.*;
 
@@ -24,6 +25,7 @@ public class RoleModel implements Serializable {
     @Column(name = "authority")
     private Set<UserAuthority> authorities;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "role", orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<UserModel> users = new HashSet<>();
 

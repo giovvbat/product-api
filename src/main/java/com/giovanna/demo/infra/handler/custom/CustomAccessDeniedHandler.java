@@ -16,7 +16,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType("application/json");
         response.setStatus(HttpStatus.FORBIDDEN.value());
-        response.getOutputStream().println("{ \"status\": " + HttpStatus.FORBIDDEN.toString() + ",\n" + "\"error\": \"access to resource restricted \" }");
+        response.getOutputStream().println("{ \"status\": " + HttpStatus.FORBIDDEN.toString() + ",\n" + "\"error\": \"access to resource restricted\" }");
     }
 }
 

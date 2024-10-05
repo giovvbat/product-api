@@ -4,7 +4,6 @@ import com.giovanna.demo.dto.user.LoginRequestRecordDto;
 import com.giovanna.demo.dto.user.LoginResponseRecordDto;
 import com.giovanna.demo.dto.user.UpdateUserResponseDto;
 import com.giovanna.demo.dto.user.UserRecordDto;
-import com.giovanna.demo.enums.UserAuthority;
 import com.giovanna.demo.infra.exception.role.RoleNotFoundException;
 import com.giovanna.demo.infra.exception.user.*;
 import com.giovanna.demo.infra.security.TokenService;
@@ -14,6 +13,7 @@ import com.giovanna.demo.repository.RoleRepository;
 import com.giovanna.demo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +32,8 @@ public class UserService {
     private TokenService tokenService;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Transactional
     public UserModel saveUser(UserRecordDto userRecordDto) {

@@ -16,6 +16,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setContentType("application/json");
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.getOutputStream().println("{ \"status\": " + HttpStatus.UNAUTHORIZED.toString() + ",\n" + "\"error\": \" resource requires authentication \" }");
+        response.getOutputStream().println("{ \"status\": " + HttpStatus.UNAUTHORIZED.toString() + ",\n" + "\"error\": \"resource requires authentication\" }");
     }
 }

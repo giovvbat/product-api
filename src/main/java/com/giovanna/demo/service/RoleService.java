@@ -3,6 +3,7 @@ package com.giovanna.demo.service;
 import com.giovanna.demo.dto.role.RoleRecordDto;
 import com.giovanna.demo.enums.UserAuthority;
 import com.giovanna.demo.infra.exception.role.NoRolesFoundException;
+import com.giovanna.demo.infra.exception.role.RoleNameAlreadyTakenException;
 import com.giovanna.demo.infra.exception.role.RoleNotFoundException;
 import com.giovanna.demo.model.RoleModel;
 import com.giovanna.demo.repository.RoleRepository;
@@ -20,6 +21,10 @@ public class RoleService {
 
     @Transactional
     public RoleModel saveRole(RoleRecordDto roleRecordDto) {
+        if (roleRepository.findByRoleName(roleRecordDto.name()).isPresent()) {
+            throw new RoleNameAlreadyTakenException();
+        }
+
         RoleModel role = new RoleModel();
         role.setRoleName(roleRecordDto.name());
         role.setAuthorities(roleRecordDto.authorities());
@@ -29,11 +34,18 @@ public class RoleService {
 
     @Transactional
     public RoleModel saveFirstAdminRole() {
+        String roleName = "admin";
+
+        if (roleRepository.findByRoleName(roleName).isPresent()) {
+            return roleRepository.findByRoleName(roleName).get();
+        }
+
         RoleModel role = new RoleModel();
         role.setRoleName("first-admin");
         Set<UserAuthority> authorities = new HashSet<>();
         authorities.add(UserAuthority.ADMIN);
         role.setAuthorities(authorities);
+
         return roleRepository.save(role);
     }
 
