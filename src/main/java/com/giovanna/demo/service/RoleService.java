@@ -34,17 +34,19 @@ public class RoleService {
 
     @Transactional
     public RoleModel saveFirstAdminRole() {
-        String roleName = "admin";
+        String roleName = "first-admin";
 
         if (roleRepository.findByRoleName(roleName).isPresent()) {
             return roleRepository.findByRoleName(roleName).get();
         }
 
         RoleModel role = new RoleModel();
-        role.setRoleName("first-admin");
+        role.setRoleName(roleName);
         Set<UserAuthority> authorities = new HashSet<>();
         authorities.add(UserAuthority.ADMIN);
         role.setAuthorities(authorities);
+
+        System.out.println("creating first admin role");
 
         return roleRepository.save(role);
     }
